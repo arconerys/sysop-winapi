@@ -9,3 +9,13 @@ argumentów
   - int main(int argc, char** argv)
 * Wprowadzenie do obsługi plików
   - CreateFile, WriteFile, typ HANDLE
+  
+# LAB2
+* Obsługa plików za pomocą API Win32
+	- CreateFile, WriteFile, ReadFile, GetFileSize
+* Parametry funkcji CreateFile
+	- dwDesiredAccess,
+	– dwShareMode,
+	– lpSecurityAttributes,
+	– dwCreationDisposition
+* Porządkowanie kodu, refatkoryzacja, podział na funkcje, klasy, camelCase, linux_case, notacja węgierska
