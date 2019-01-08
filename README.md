@@ -22,11 +22,18 @@ argumentów
 
 # LAB3
 * Tworzenie odbrębnego procesu
-	– CreateProcess
+	- CreateProcess
 * Synchronizacja dostępu do zasobów między procesami
-	– dostęp do pliku
-	– wykorzystanie pliku w roli mutexa (parametry f. CreateFile)
+	- dostęp do pliku
+	- wykorzystanie pliku w roli mutexa (parametry f. CreateFile)
 * wykorzystanie wielu podejść w programowaniu C++
-	– C-style (strtok)
-	– C++style (ostream, getline)
-	– C++ with features (boost)
+	- C-style (strtok)
+	- C++style (ostream, getline)
+	- C++ with features (boost)
+	
+# LAB4
+* Wykorzystanie omówionego materiału w praktyce:
+ - Stworzony program składa się z dwóch procesów, proces 1 losuje N liczb całkowitych z zakresu 1...100 i zapisuję je do pliku. N podawane jest jako parametr przy wywołaniu programu.
+ - Proces 1, przed rozpoczęciem losowania i zapisu danych uruchamia proces 2, który oczekuje na dostęp do pliku (spinlock).
+ - Proces 2, po uzyskaniu dostępu do pliku odczytuje zapisane w nim liczby, a następnie oblicza średnią i wyświetla ją na ekranie, proces 2 się kończy.
+ - Proces 1 kończy się po zakończeniu procesu 2 (WaitForSingleObject)
