@@ -3,11 +3,13 @@
 #include <sstream>
 #include <vector>
 #include <windows.h>
+#include <algorithm>
 
 using namespace std;
 
 HANDLE create_file();
 DWORD read_file(HANDLE, char[], int);
+DWORD WINAPI AllOperation(LPVOID);
 
 int main(int argc, char* argv[])
 {
@@ -18,16 +20,16 @@ int main(int argc, char* argv[])
 		out = create_file();
 	} while(out == INVALID_HANDLE_VALUE);
 	
-	cout << "File has been loaded." << endl << endl;
+	cout << "File has been loaded." << endl;
 	
 	DWORD byteSize = GetFileSize(out, NULL);
 	
-	int size = byteSize/sizeof(char) + 1;
-	char toRead[size] {0};
+	int size = byteSize/sizeof(char);
+	char toRead[size-1] {0};
 	
 	DWORD bytesRead = read_file(out, &toRead[0], byteSize);
 	
-	cout << "Loaded " << bytesRead << " bytes from file." << endl;
+	cout << "Loaded " << bytesRead << " bytes from file." << endl << endl;
 	
 	istringstream ss(toRead);
 	string number;
@@ -44,16 +46,12 @@ int main(int argc, char* argv[])
 		cout << myNumbers.at(i) << "\t";
 	}
 
-	int sizeVectorInt = myNumbers.size();
-	float sum = 0;
-	for(int i = 0; i < sizeVectorInt; i++) {
-		sum += myNumbers.at(i);
-	}
+	DWORD ID;
+	HANDLE thread = CreateThread(NULL, 0, AllOperation, &myNumbers, 0, &ID);
+	WaitForSingleObject(thread, INFINITE);
+	CloseHandle(thread);
+	cout << "\nThe thread has been closed successfully." << endl;
 
-	float result = sum/sizeVectorInt;
-	
-	cout<<"\nThe average is: "<< result <<endl;
-	
 	return 0;
 }
 
@@ -78,5 +76,26 @@ DWORD read_file(HANDLE out, char data[], int size) {
 	ReadFile(out, &data[0], size, &bytesRead, NULL);
 	
 	return bytesRead;
+}
+
+DWORD WINAPI AllOperation(LPVOID value){
+	
+	vector<int> myNumbers = *((vector<int>*)value);
+	vector<int>::iterator it1 = max_element(myNumbers.begin(), myNumbers.end());
+	vector<int>::iterator it2 = min_element(myNumbers.begin(), myNumbers.end());
+	
+	int size = myNumbers.size();
+	float sum = 0;
+	for (int i=0; i < size; i++) {
+		sum += myNumbers.at(i);
+	}
+	
+	float result = sum/size;
+
+	cout << "\n\nThe average is: " << result << endl;
+	cout << "Maximum value is: " << *it1 << endl;
+	cout << "Minimum value is: " << *it2 << endl;
+	
+	return 0;
 }
 
