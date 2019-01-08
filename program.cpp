@@ -53,14 +53,33 @@ int main(int argc, char* argv[])
 
 	HANDLE ThreadArray[MAX_THREADS]; 
 	DWORD ID[MAX_THREADS];
+	LARGE_INTEGER StartingTime[MAX_THREADS], EndingTime, ElapsedMicroseconds;
+	LARGE_INTEGER Frequency[MAX_THREADS];
 	ThreadArray[0] = CreateThread(NULL, 0, Max, &myNumbers, CREATE_SUSPENDED, &ID[0]);
+	QueryPerformanceFrequency(&Frequency[0]); 
+	QueryPerformanceCounter(&StartingTime[0]);
 	ThreadArray[1] = CreateThread(NULL, 0, Min, &myNumbers, CREATE_SUSPENDED, &ID[1]);
+	QueryPerformanceFrequency(&Frequency[1]); 
+	QueryPerformanceCounter(&StartingTime[1]);
 	ThreadArray[2] = CreateThread(NULL, 0, Average, &myNumbers, CREATE_SUSPENDED, &ID[2]);
+	QueryPerformanceFrequency(&Frequency[2]); 
+	QueryPerformanceCounter(&StartingTime[2]);
 	ThreadArray[3] = CreateThread(NULL, 0, AllOperation, &myNumbers, CREATE_SUSPENDED, &ID[3]);
+	QueryPerformanceFrequency(&Frequency[3]); 
+	QueryPerformanceCounter(&StartingTime[3]);
 	
 	for(int i = 1; i <= MAX_THREADS; i++) {
 		ResumeThread(ThreadArray[i-1]);
+		cout << "\nThe thread " << i << " has been started." << endl;
 		WaitForSingleObject(ThreadArray[i-1], INFINITE);
+		
+		QueryPerformanceCounter(&EndingTime);
+		ElapsedMicroseconds.QuadPart = EndingTime.QuadPart - StartingTime[i-1].QuadPart;
+		ElapsedMicroseconds.QuadPart *= 1000;
+		ElapsedMicroseconds.QuadPart /= Frequency[i-1].QuadPart;
+		
+		cout << "The thread " << i << " was made in " << ElapsedMicroseconds.QuadPart << "ms." << endl;
+		
 		CloseHandle(ThreadArray[i-1]);
 		cout << "\nThe thread #" << i << " has been closed successfully." << endl;
 	}
