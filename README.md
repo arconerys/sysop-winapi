@@ -37,3 +37,10 @@ argumentów
  - Proces 1, przed rozpoczęciem losowania i zapisu danych uruchamia proces 2, który oczekuje na dostęp do pliku (spinlock).
  - Proces 2, po uzyskaniu dostępu do pliku odczytuje zapisane w nim liczby, a następnie oblicza średnią i wyświetla ją na ekranie, proces 2 się kończy.
  - Proces 1 kończy się po zakończeniu procesu 2 (WaitForSingleObject)
+ 
+# LAB5
+* Dalsza rozbudowa programu:
+	- Przygotowanie dwóch wariantów programu wykonywanego w procesie 2:
+* Wariant A: poza średnią, program szuka też wartości maksymalnej i minimalnej, obliczenia wykonywane są sekwencyjnie, w jednym wątku
+* Wariant B: funkcjonalność jak w wariancie A, należy stworzyć 3 dodatkowe wątki, każdy odpowiedzialny za jedną z części obliczeń (avg, min, max)
+	- Funkcję niezbędne do realizacji tego etapu: HeapAlloc(), HeapFree(), CreateThread(), WaitForSingleObject(), WaitForMultipleObject().
