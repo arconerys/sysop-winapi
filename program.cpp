@@ -47,9 +47,18 @@ int main(int argc, char* argv[])
 	}
 
 	DWORD ID;
+	LARGE_INTEGER StartingTime, EndingTime, ElapsedMicroseconds;
+	LARGE_INTEGER Frequency;
 	HANDLE thread = CreateThread(NULL, 0, AllOperation, &myNumbers, 0, &ID);
+	QueryPerformanceFrequency(&Frequency); 
+	QueryPerformanceCounter(&StartingTime);
 	WaitForSingleObject(thread, INFINITE);
 	CloseHandle(thread);
+	QueryPerformanceCounter(&EndingTime);
+	ElapsedMicroseconds.QuadPart = EndingTime.QuadPart - StartingTime.QuadPart;
+	ElapsedMicroseconds.QuadPart *= 1000;
+	ElapsedMicroseconds.QuadPart /= Frequency.QuadPart;
+	cout << "The thread was made in " << ElapsedMicroseconds.QuadPart << "ms." << endl;
 	cout << "\nThe thread has been closed successfully." << endl;
 
 	return 0;
