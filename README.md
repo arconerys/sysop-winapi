@@ -19,3 +19,14 @@ argumentów
 	– lpSecurityAttributes,
 	– dwCreationDisposition
 * Porządkowanie kodu, refatkoryzacja, podział na funkcje, klasy, camelCase, linux_case, notacja węgierska
+
+# LAB3
+* Tworzenie odbrębnego procesu
+	– CreateProcess
+* Synchronizacja dostępu do zasobów między procesami
+	– dostęp do pliku
+	– wykorzystanie pliku w roli mutexa (parametry f. CreateFile)
+* wykorzystanie wielu podejść w programowaniu C++
+	– C-style (strtok)
+	– C++style (ostream, getline)
+	– C++ with features (boost)
